@@ -1,0 +1,124 @@
+블루투스
+RX(D3), TX(D2), GND(GND로), VCC(전원입력), 
+bluetooth serial controller, blutooth termanal(0000, 1234)
+
+#include <SoftwareSerial.h>
+
+int blue_tx = 2;
+int blue_rx = 3;
+SoftwareSerial blu_serial(blue_tx, blue_rx);
+
+string buuffer = "";
+
+void setup(){
+	blu_serial.begin(9600);
+	Serial.begin(9600);	
+}
+
+void loop(){
+	char temp;
+	// 값을 받는 예제
+	while(blu_serial.available()){ 
+		temp = (char) blu_serial.read();
+		buuffer += temp;		
+	}
+	//값을 보내는 예제
+	blu_serial.println("send data");
+	
+	if(buffer.equals("")){
+		Serial.println(buffer);
+		buffer = "";
+	}
+	
+}
+
+센서들 테스트용 코드
+void setup(){
+	Serial.begin(9600);
+}
+
+void loop(){
+	int temp;
+  	temp = analogRead(A0);
+	 Serial.print(temp);
+}
+
+==================================================================================
+#include <SoftwareSerial.h>
+
+char temp;
+int blue_tx = 2;
+int blue_rx = 3;
+
+SoftwareSerial blu_serial(blue_tx, blue_rx);
+
+String buffer = "";
+
+void setup(){
+	blu_serial.begin(9600);
+	Serial.begin(9600);	
+}
+
+void loop(){
+
+	// 값을 받는 예제
+/*
+	while(blu_serial.available()){ 
+		temp = (char) blu_serial.read();
+		buffer += temp;
+                delay(5);		
+	}
+
+
+	if(!buffer.equals("")){
+                blu_serial.println("send data is "+buffer);
+		Serial.println(buffer);
+		buffer = "";
+                delay(5);
+	}
+*/
+  int temp = analogRead(A0);
+  if( temp < 900){
+    Serial.println(temp);
+    blu_serial.println(temp);
+    delay(500);
+  }	
+}
+
+
+
+
+===================================
+초기에 블루투스 모듈을 사면 원하는 대로 작동되지 않는다.
+해당 소스를 아두이농 올린다.  
+
+
+#include <SoftwareSerial.h>
+int bluetoothTx = 2;
+int bluetoothRx = 3;
+SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
+void setup()
+{
+ Serial.begin(9600);
+ bluetooth.begin(9600);
+}
+void loop(){
+ if(bluetooth.available()){
+   Serial.print((char)bluetooth.read());
+ }
+ if(Serial.available()){
+   bluetooth.print((char)Serial.read());
+ }
+}
+
+
+소스를 모두 올린뒤에 시리얼 모니터를 켜고
+"no line ending"으로 설정하고 
+AT모드 명령어를 쓸 수 있게 해둔다.
+다음의 명령어들을 순차적으로 입력하면된다
+
+AT                  => OK 답신옴
+AT+ROLE=S           => 비슷한 글의 답변이 옴
+AT+BAUD4            => 비슷한 글의 답변이 옴
+
+안될시 인터넷에 "HC-06 AT" 명령어라고 검색할것
