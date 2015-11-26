@@ -1,0 +1,289 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/yello">
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/playbit"
+        android:background="@drawable/img_play"
+        android:onClick="onPlayBitButtonClicked" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/pause"
+        android:background="@drawable/img_pause"
+        android:onClick="onPauseButtonClicked" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/stop"
+        android:background="@drawable/img_stop"
+        android:onClick="onStopButtonClicked"
+        android:nestedScrollingEnabled="false" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/record"
+        android:background="@drawable/img_record"
+        android:onClick="onRecordButtonClicked" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/music"
+        android:background="@drawable/img_music"
+        android:onClick="onMusicButtonClicked" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/option"
+        android:background="@drawable/img_option"
+        android:onClick="onOptionButtonClicked" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/bluetooth"
+        android:background="@drawable/img_bluetooth"
+        android:onClick="onBluetoothButtonClicked" />
+
+</LinearLayout>
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/main_layout"
+    android:layout_weight="1">
+
+    <ViewFlipper
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/vf_l"
+        android:layout_weight="0.5"
+        android:weightSum="1"
+        android:nestedScrollingEnabled="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/left_sample1"
+                android:background="@drawable/snare"
+                android:onClick="onLeft1ButtonClicked" />
+
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/left_sample2"
+                android:background="@drawable/crash"
+                android:onClick="onLeft2ButtonClicked" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/left_sample3"
+                android:background="@drawable/splash"
+                android:onClick="onLeft3ButtonClicked" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/left_sample4"
+                android:background="@drawable/high_hat"
+                android:onClick="onLeft4ButtonClicked" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/left_sample5"
+                android:background="@drawable/high_tom"
+                android:onClick="onLeft5ButtonClicked" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/left_sample6"
+                android:background="@drawable/low_tom"
+                android:onClick="onLeft6ButtonClicked" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/left_sample7"
+                android:background="@drawable/base_drum"
+                android:onClick="onLeft7ButtonClicked" />
+
+
+        </LinearLayout>
+
+
+    </ViewFlipper>
+
+    <ViewFlipper
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:id="@+id/vf_r"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/right_sample1"
+                android:background="@drawable/snare"
+                android:onClick="onRight1ButtonClicked" />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/right_sample2"
+                android:background="@drawable/crash"
+                android:onClick="onRight2ButtonClicked" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/right_sample3"
+                android:background="@drawable/splash"
+                android:onClick="onRight3ButtonClicked" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/right_sample4"
+                android:background="@drawable/high_hat"
+                android:onClick="onRight4ButtonClicked" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/right_sample5"
+                android:background="@drawable/high_tom"
+                android:onClick="onRight5ButtonClicked" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/right_sample6"
+                android:background="@drawable/low_tom"
+                android:onClick="onRight6ButtonClicked" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/right_sample7"
+                android:background="@drawable/base_drum"
+                android:onClick="onRight7ButtonClicked" />
+        </LinearLayout>
+
+        </ViewFlipper>
+
+</LinearLayout>
+</LinearLayout>
