@@ -1,11 +1,9 @@
 package companydomain.vird;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.AudioManager;
@@ -16,12 +14,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -55,6 +51,7 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
 
     SeekBar mSeek;
     SeekBar pSeek;
+    SeekBar.OnSeekBarChangeListener ol;
 
     SoundPool sndp1;
     SoundPool sndp2;
@@ -289,6 +286,57 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
     public void onOptionButtonClicked(View v) {
         // Toast.makeText(getApplicationContext(), "onOptionButtonClicked", Toast.LENGTH_LONG).show();
 
+        Dialog d = new Dialog(this);
+        d.setContentView(R.layout.dialog);
+        mSeek = (SeekBar)d.findViewById(R.id.musicbar);
+        pSeek = (SeekBar)d.findViewById(R.id.poolbar);
+
+        mSeek.getProgress();
+        pSeek.getProgress();
+
+        //Music 시크바
+        mSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mVolume = progress * ST;
+                    player.setVolume(mVolume, mVolume);
+
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        //SoundPool 조절
+        pSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    pVolume = progress * ST;
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        d.show();
+/* 원래 있던것
         Context mContext = getApplicationContext();
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -307,6 +355,8 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
         //팝업창 생성
         AlertDialog ad = aDialog.create();
         ad.show();//보여줌!
+
+        */
 /*
         new AlertDialog.Builder(this)
                 .setTitle("Select Item") //팝업창 타이틀바
