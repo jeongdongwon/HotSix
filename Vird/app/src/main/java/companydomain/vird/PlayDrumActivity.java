@@ -20,7 +20,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -42,9 +44,9 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
     int music_state;
 
     private final int DRUM_SNARE = 0;
-    private final int DRUM_HIHAT = 1;
-    private final int DRUM_CRASH = 2;
-    private final int DRUM_SPLASH = 3;
+    private final int DRUM_CRASH = 1;
+    private final int DRUM_SPLASH = 2;
+    private final int DRUM_HIHAT = 3;
     private final int DRUM_TOM1 = 4;
     private final int DRUM_TOM2 = 5;
     private final int DRUM_TOM3 = 6;
@@ -70,6 +72,7 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_SLIDE_DRUM = 6;
 
     public static final int PLAY_SUOND_LEFT = 0;
     public static final int PLAY_SUOND_RIGHT = 1;
@@ -87,6 +90,9 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
     private static final String TAG = "BluetoothChat";
     private static final boolean D = true;
     private static final String SM = "Main_Seonmin";
+
+    private static final int LEFTCHECK = 0;
+    private static final int RIGHTCHECK = 1;
 
 
     // Name of the connected device
@@ -113,21 +119,33 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
 
     private int m_nPreTouchPosX = 0;
 
-    Button lb1;
-    Button lb2;
-    Button lb3;
-    Button lb4;
-    Button lb5;
-    Button lb6;
-    Button lb7;
+    ImageButton lb1;
+    ImageButton lb2;
+    ImageButton lb3;
+    ImageButton lb4;
+    ImageButton lb5;
+    ImageButton lb6;
+    ImageButton lb7;
 
-    Button rb1;
-    Button rb2;
-    Button rb3;
-    Button rb4;
-    Button rb5;
-    Button rb6;
-    Button rb7;
+    ImageButton rb1;
+    ImageButton rb2;
+    ImageButton rb3;
+    ImageButton rb4;
+    ImageButton rb5;
+    ImageButton rb6;
+    ImageButton rb7;
+
+    ImageView[] imageView = new ImageView[14];
+
+    boolean isPageOpen = false;
+
+    Animation translateLeftAnim;
+    Animation translateRightAnim;
+
+    LinearLayout slidingPage01;
+
+    int left_check;
+    int right_check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +157,8 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
 
 
         //  sndp1.load(this, R.raw.snare, 1);
-        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SNARE);
-        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SNARE);
+        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SNARE, LEFTCHECK);
+        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SNARE, RIGHTCHECK);
 
         music_state = STATE_INIT;
 
@@ -152,7 +170,7 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
             Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
         }
 
-        vf_left = (ViewFlipper)findViewById(R.id.vf_l);
+        vf_left = (ViewFlipper) findViewById(R.id.vf_l);
         slide_in_left_vfl = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
         slide_out_right_vfl = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
 
@@ -160,30 +178,30 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
         vf_left.setInAnimation(slide_out_right_vfl);
 
 
-
-        vf_right = (ViewFlipper)findViewById(R.id.vf_r);
+        vf_right = (ViewFlipper) findViewById(R.id.vf_r);
         slide_in_left_vfr = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
         slide_out_right_vfr = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
 
         vf_right.setInAnimation(slide_in_left_vfr);
         vf_right.setInAnimation(slide_out_right_vfr);
 
-        lb1 = (Button)findViewById(R.id.left_sample1);
-        lb2 = (Button)findViewById(R.id.left_sample2);
-        lb3 = (Button)findViewById(R.id.left_sample3);
-        lb4 = (Button)findViewById(R.id.left_sample4);
-        lb5 = (Button)findViewById(R.id.left_sample5);
-        lb6 = (Button)findViewById(R.id.left_sample6);
-        lb7 = (Button)findViewById(R.id.left_sample7);
+
+        lb1 = (ImageButton) findViewById(R.id.left_sample1);
+        lb2 = (ImageButton) findViewById(R.id.left_sample2);
+        lb3 = (ImageButton) findViewById(R.id.left_sample3);
+        lb4 = (ImageButton) findViewById(R.id.left_sample4);
+        lb5 = (ImageButton) findViewById(R.id.left_sample5);
+        lb6 = (ImageButton) findViewById(R.id.left_sample6);
+        lb7 = (ImageButton) findViewById(R.id.left_sample7);
 
 
-        rb1 = (Button)findViewById(R.id.right_sample1);
-        rb2 = (Button)findViewById(R.id.right_sample2);
-        rb3 = (Button)findViewById(R.id.right_sample3);
-        rb4 = (Button)findViewById(R.id.right_sample4);
-        rb5 = (Button)findViewById(R.id.right_sample5);
-        rb6 = (Button)findViewById(R.id.right_sample6);
-        rb7 = (Button)findViewById(R.id.right_sample7);
+        rb1 = (ImageButton) findViewById(R.id.right_sample1);
+        rb2 = (ImageButton) findViewById(R.id.right_sample2);
+        rb3 = (ImageButton) findViewById(R.id.right_sample3);
+        rb4 = (ImageButton) findViewById(R.id.right_sample4);
+        rb5 = (ImageButton) findViewById(R.id.right_sample5);
+        rb6 = (ImageButton) findViewById(R.id.right_sample6);
+        rb7 = (ImageButton) findViewById(R.id.right_sample7);
 
         lb1.setOnTouchListener(this);
         lb2.setOnTouchListener(this);
@@ -200,6 +218,55 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
         rb5.setOnTouchListener(this);
         rb6.setOnTouchListener(this);
         rb7.setOnTouchListener(this);
+
+
+        slidingPage01 = (LinearLayout) findViewById(R.id.slidingPage01);
+
+        translateLeftAnim = AnimationUtils.loadAnimation(this, R.anim.translate_left);
+        translateRightAnim = AnimationUtils.loadAnimation(this, R.anim.translate_right);
+
+        SlidingPageAnimationListener animListener = new SlidingPageAnimationListener();
+        translateLeftAnim.setAnimationListener(animListener);
+        translateRightAnim.setAnimationListener(animListener);
+
+        imageView[0] = (ImageView) findViewById(R.id.imageView01);
+        imageView[1] = (ImageView) findViewById(R.id.imageView02);
+        imageView[2] = (ImageView) findViewById(R.id.imageView03);
+        imageView[3] = (ImageView) findViewById(R.id.imageView04);
+        imageView[4] = (ImageView) findViewById(R.id.imageView05);
+        imageView[5] = (ImageView) findViewById(R.id.imageView06);
+        imageView[6] = (ImageView) findViewById(R.id.imageView07);
+        imageView[7] = (ImageView) findViewById(R.id.imageView08);
+        imageView[8] = (ImageView) findViewById(R.id.imageView09);
+        imageView[9] = (ImageView) findViewById(R.id.imageView10);
+        imageView[10] = (ImageView) findViewById(R.id.imageView11);
+        imageView[11] = (ImageView) findViewById(R.id.imageView12);
+        imageView[12] = (ImageView) findViewById(R.id.imageView13);
+        imageView[13] = (ImageView) findViewById(R.id.imageView14);
+
+        imageView[0].setVisibility(View.VISIBLE);
+        imageView[7].setVisibility(View.VISIBLE);
+
+    }
+
+    private class SlidingPageAnimationListener implements Animation.AnimationListener {
+
+        public void onAnimationEnd(Animation animation) {
+            if (isPageOpen) {
+                slidingPage01.setVisibility(View.INVISIBLE);
+                isPageOpen = false;
+            } else
+                isPageOpen = true;
+        }
+
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+
+        public void onAnimationStart(Animation animation) {
+
+        }
+
     }
 
     @Override
@@ -288,11 +355,15 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
 
         Dialog d = new Dialog(this);
         d.setContentView(R.layout.dialog);
-        mSeek = (SeekBar)d.findViewById(R.id.musicbar);
-        pSeek = (SeekBar)d.findViewById(R.id.poolbar);
+        mSeek = (SeekBar) d.findViewById(R.id.musicbar);
+        pSeek = (SeekBar) d.findViewById(R.id.poolbar);
 
         mSeek.getProgress();
         pSeek.getProgress();
+
+        mSeek.setProgress((int) (mVolume * 100));
+        pSeek.setProgress((int) (pVolume * 100));
+
 
         //Music 시크바
         mSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -300,8 +371,8 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     mVolume = progress * ST;
-                    player.setVolume(mVolume, mVolume);
-
+                    if(player != null)
+                        player.setVolume(mVolume, mVolume);
                 }
             }
 
@@ -336,39 +407,6 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
             }
         });
         d.show();
-/* 원래 있던것
-        Context mContext = getApplicationContext();
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-
-        //R.layout.dialog는 xml 파일명이고  R.id.popup은 보여줄 레이아웃 아이디
-        View layout = inflater.inflate(R.layout.dialog, (ViewGroup) findViewById(R.id.optionpopup));
-        AlertDialog.Builder aDialog = new AlertDialog.Builder(this);
-
-        aDialog.setTitle("Option"); //타이틀바 제목
-        aDialog.setView(layout); //dialog.xml 파일을 뷰로 셋팅
-
-        //그냥 닫기버튼을 위한 부분
-        aDialog.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        //팝업창 생성
-        AlertDialog ad = aDialog.create();
-        ad.show();//보여줌!
-
-        */
-/*
-        new AlertDialog.Builder(this)
-                .setTitle("Select Item") //팝업창 타이틀바
-                .setMessage("FinessShot")  //팝업창 내용
-                .setNeutralButton("닫기",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dlg, int sumthin) {
-                        //닫기 버튼을 누르면 아무것도 안하고 닫기 때문에 그냥 비움
-
-                    }
-                })
-                .show(); // 팝업창 보여줌
-                */
     }
 
     public void onMusicButtonClicked(View v) {
@@ -413,67 +451,7 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
         play_sound(PLAY_SUOND_LEFT);
     }
 
-    public void onLeft2ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample1ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_LEFT);
-    }
-
-    public void onLeft3ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample1ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_LEFT);
-    }
-
-    public void onLeft4ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample1ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_LEFT);
-    }
-
-    public void onLeft5ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample1ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_LEFT);
-    }
-
-    public void onLeft6ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample1ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_LEFT);
-    }
-
-    public void onLeft7ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample1ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_LEFT);
-    }
-
     public void onRight1ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample2ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_RIGHT);
-    }
-
-    public void onRight2ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample2ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_RIGHT);
-    }
-
-    public void onRight3ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample2ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_RIGHT);
-    }
-
-    public void onRight4ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample2ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_RIGHT);
-    }
-
-    public void onRight5ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample2ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_RIGHT);
-    }
-
-    public void onRight6ButtonClicked(View v) {
-        //Toast.makeText(getApplicationContext(), "onSample2ButtonClicked", Toast.LENGTH_LONG).show();
-        play_sound(PLAY_SUOND_RIGHT);
-    }
-
-    public void onRight7ButtonClicked(View v) {
         //Toast.makeText(getApplicationContext(), "onSample2ButtonClicked", Toast.LENGTH_LONG).show();
         play_sound(PLAY_SUOND_RIGHT);
     }
@@ -492,7 +470,6 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
             player.setDataSource(MEDIA_PATH);
             player.prepare();
             player.start();
-            player.setVolume(0.1f, 0.1f);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -623,73 +600,12 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
     private void setupChat() {
         Log.d(TAG, "setupChat()");
 
-        /*
-        // Initialize the array adapter for the conversation thread
-        mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
-        mConversationView = (ListView) findViewById(R.id.in);
-        mConversationView.setAdapter(mConversationArrayAdapter);
-
-
-        // Initialize the compose field with a listener for the return key
-        mOutEditText = (EditText) findViewById(R.id.edit_text_out);
-        mOutEditText.setOnEditorActionListener(mWriteListener);
-
-        // Initialize the send button with a listener that for click events
-        mSendButton = (Button) findViewById(R.id.button_send);
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Send a message using content of the edit text widget
-                TextView view = (TextView) findViewById(R.id.edit_text_out);
-                String message = view.getText().toString();
-                sendMessage(message);
-            }
-        });
-        */
-
         // Initialize the BluetoothChatService to perform bluetooth connections
         mChatService = new BluetoothChatService(this, mHandler);
 
         // Initialize the buffer for outgoing messages
         //mOutStringBuffer = new StringBuffer("");
     }
-
-/*
-    private TextView.OnEditorActionListener mWriteListener =
-            new TextView.OnEditorActionListener() {
-                public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-                    // If the action is a key-up event on the return key, send the message
-                    if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
-                        String message = view.getText().toString();
-                        sendMessage(message);
-                    }
-                    if(D) Log.i(TAG, "END onEditorAction");
-                    return true;
-                }
-            };
-
-*/
-
-
-/*
-    private void sendMessage(String message) {
-        // Check that we're actually connected before trying anything
-        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
-            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Check that there's actually something to send
-        if (message.length() > 0) {
-            // Get the message bytes and tell the BluetoothChatService to write
-            byte[] send = message.getBytes();
-           // mChatService.write(send);
-
-            // Reset out string buffer to zero and clear the edit text field
-            mOutStringBuffer.setLength(0);
-            mOutEditText.setText(mOutStringBuffer);
-        }
-    }
-    */
 
     private final Handler mHandler = new Handler() {
         @Override
@@ -752,15 +668,17 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
                             Toast.LENGTH_SHORT).show();
                     break;
+                case MESSAGE_SLIDE_DRUM: {
+                    slidingPage01.startAnimation(translateRightAnim);
+                }
             }
         }
     };
 
     void play_sound(int direct) {
-        if(direct == PLAY_SUOND_LEFT) {
+        if (direct == PLAY_SUOND_LEFT) {
             play_sound_left();
-        }
-            else if(direct == PLAY_SUOND_RIGHT){
+        } else if (direct == PLAY_SUOND_RIGHT) {
             play_sound_right();
         }
     }
@@ -770,7 +688,7 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
         Log.d(SM, " **case 1**");
     }
 
-    void play_sound_right(){
+    void play_sound_right() {
         sndp2.play(sndID2, pVolume, pVolume, 1, 0, 1);
         Log.d(SM, " **case 2**");
     }
@@ -785,32 +703,35 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
         //actionBar.setSubtitle(subTitle);
     }
 
-    private int LoadSoundPoolObject(SoundPool sndp, int target)
-    {
-        int sndID=0;
-        switch(target) {
+    private int LoadSoundPoolObject(SoundPool sndp, int target, int check) {
+        int sndID = 0;
+        switch (target) {
             case DRUM_SNARE:
-                sndID =  sndp.load(this, R.raw.snare, 1);
+                sndID = sndp.load(this, R.raw.snare, 1);
                 break;
             case DRUM_HIHAT:
-                sndID =  sndp.load(this, R.raw.hihat, 1);
+                sndID = sndp.load(this, R.raw.hihat, 1);
                 break;
             case DRUM_CRASH:
-                sndID =  sndp.load(this, R.raw.crash, 1);
+                sndID = sndp.load(this, R.raw.crash, 1);
                 break;
             case DRUM_SPLASH:
-                sndID =  sndp.load(this, R.raw.splash, 1);
+                sndID = sndp.load(this, R.raw.splash, 1);
                 break;
             case DRUM_TOM1:
-                sndID =  sndp.load(this, R.raw.tom1, 1);
+                sndID = sndp.load(this, R.raw.tom1, 1);
                 break;
             case DRUM_TOM2:
-                sndID =  sndp.load(this, R.raw.tom2, 1);
+                sndID = sndp.load(this, R.raw.tom2, 1);
                 break;
             case DRUM_TOM3:
                 sndID = sndp.load(this, R.raw.tom3, 1);
                 break;
         }
+        if (check == LEFTCHECK)
+            left_check = target;
+        else
+            right_check = target;
         return sndID;
     }
 
@@ -819,191 +740,202 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             m_nPreTouchPosX = (int) event.getX();
-           // Toast.makeText(getApplicationContext(), "TouchDown", Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(), "TouchDown", Toast.LENGTH_LONG).show();
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
             //Toast.makeText(getApplicationContext(), String.valueOf(v.getId()) + " " + R.id.vf_l, Toast.LENGTH_LONG).show();
             int nTouchPosX = (int) event.getX();
+            if (nTouchPosX > m_nPreTouchPosX + 10) {
 
-            if (nTouchPosX > m_nPreTouchPosX+10) {
-                switch (v.getId())
-                {
+                switch (v.getId()) {
                     case R.id.left_sample1:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM3);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM3, LEFTCHECK);
                         vf_left.showPrevious();
+                        ChangeCheckVisibility(0, 1);
                         break;
                     case R.id.left_sample2:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SNARE);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SNARE, LEFTCHECK);
                         vf_left.showPrevious();
+                        ChangeCheckVisibility(0, 1);
                         break;
                     case R.id.left_sample3:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_CRASH);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_CRASH, LEFTCHECK);
                         vf_left.showPrevious();
+                        ChangeCheckVisibility(0, 1);
                         break;
                     case R.id.left_sample4:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SPLASH);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SPLASH, LEFTCHECK);
                         vf_left.showPrevious();
+                        ChangeCheckVisibility(0, 1);
                         break;
                     case R.id.left_sample5:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_HIHAT);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_HIHAT, LEFTCHECK);
                         vf_left.showPrevious();
+                        ChangeCheckVisibility(0, 1);
                         break;
                     case R.id.left_sample6:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM1);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM1, LEFTCHECK);
                         vf_left.showPrevious();
+                        ChangeCheckVisibility(0, 1);
                         break;
                     case R.id.left_sample7:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM2);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM2, LEFTCHECK);
                         vf_left.showPrevious();
+                        ChangeCheckVisibility(0, 1);
                         break;
 
 
                     case R.id.right_sample1:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM3);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM3, RIGHTCHECK);
                         vf_right.showPrevious();
+                        ChangeCheckVisibility(1, 1);
                         break;
                     case R.id.right_sample2:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SNARE);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SNARE, RIGHTCHECK);
                         vf_right.showPrevious();
+                        ChangeCheckVisibility(1, 1);
                         break;
                     case R.id.right_sample3:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_CRASH);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_CRASH, RIGHTCHECK);
                         vf_right.showPrevious();
+                        ChangeCheckVisibility(1, 1);
                         break;
                     case R.id.right_sample4:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SPLASH);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SPLASH, RIGHTCHECK);
                         vf_right.showPrevious();
+                        ChangeCheckVisibility(1, 1);
                         break;
                     case R.id.right_sample5:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_HIHAT);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_HIHAT, RIGHTCHECK);
                         vf_right.showPrevious();
+                        ChangeCheckVisibility(1, 1);
                         break;
                     case R.id.right_sample6:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM1);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM1, RIGHTCHECK);
                         vf_right.showPrevious();
+                        ChangeCheckVisibility(1, 1);
                         break;
                     case R.id.right_sample7:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM2);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM2, RIGHTCHECK);
                         vf_right.showPrevious();
+                        ChangeCheckVisibility(1, 1);
                         break;
                 }
-            } else if (nTouchPosX < m_nPreTouchPosX-10) {  // 1 snare 2 crash 3 splash 4 hihat 5 tom1 6 tom2 7 tom3
-                switch (v.getId())
-                {
+                if (isPageOpen) {
+                    //slidingPage01.startAnimation(translateRightAnim);
+                    mHandler.removeMessages(PlayDrumActivity.MESSAGE_SLIDE_DRUM);
+                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 5000);
+                } else {
+                    slidingPage01.setVisibility(View.VISIBLE);
+                    slidingPage01.startAnimation(translateLeftAnim);
+                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 5000);
+                }
+
+            } else if (nTouchPosX < m_nPreTouchPosX - 10) {  // 1 snare 2 crash 3 splash 4 hihat 5 tom1 6 tom2 7 tom3
+
+                switch (v.getId()) {
                     case R.id.left_sample1:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_CRASH);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_CRASH, LEFTCHECK);
                         vf_left.showNext();
+                        ChangeCheckVisibility(0,0);
                         break;
                     case R.id.left_sample2:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SPLASH);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SPLASH, LEFTCHECK);
                         vf_left.showNext();
+                        ChangeCheckVisibility(0,0);
                         break;
                     case R.id.left_sample3:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_HIHAT);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_HIHAT, LEFTCHECK);
                         vf_left.showNext();
+                        ChangeCheckVisibility(0,0);
                         break;
                     case R.id.left_sample4:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM1);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM1, LEFTCHECK);
                         vf_left.showNext();
+                        ChangeCheckVisibility(0,0);
                         break;
                     case R.id.left_sample5:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM2);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM2, LEFTCHECK);
                         vf_left.showNext();
+                        ChangeCheckVisibility(0,0);
                         break;
                     case R.id.left_sample6:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM3);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_TOM3, LEFTCHECK);
                         vf_left.showNext();
+                        ChangeCheckVisibility(0,0);
                         break;
                     case R.id.left_sample7:
-                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SNARE);
+                        sndID1 = LoadSoundPoolObject(sndp1, DRUM_SNARE, LEFTCHECK);
                         vf_left.showNext();
+                        ChangeCheckVisibility(0,0);
                         break;
-
 
                     case R.id.right_sample1:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_CRASH);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_CRASH, RIGHTCHECK);
                         vf_right.showNext();
+                        ChangeCheckVisibility(1,0);
                         break;
                     case R.id.right_sample2:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SPLASH);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SPLASH, RIGHTCHECK);
                         vf_right.showNext();
+                        ChangeCheckVisibility(1,0);
                         break;
                     case R.id.right_sample3:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_HIHAT);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_HIHAT, RIGHTCHECK);
                         vf_right.showNext();
+                        ChangeCheckVisibility(1,0);
                         break;
                     case R.id.right_sample4:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM1);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM1, RIGHTCHECK);
                         vf_right.showNext();
+                        ChangeCheckVisibility(1,0);
                         break;
                     case R.id.right_sample5:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM2);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM2, RIGHTCHECK);
                         vf_right.showNext();
+                        ChangeCheckVisibility(1,0);
                         break;
                     case R.id.right_sample6:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM3);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_TOM3, RIGHTCHECK);
                         vf_right.showNext();
+                        ChangeCheckVisibility(1,0);
                         break;
                     case R.id.right_sample7:
-                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SNARE);
+                        sndID2 = LoadSoundPoolObject(sndp2, DRUM_SNARE, RIGHTCHECK);
                         vf_right.showNext();
+                        ChangeCheckVisibility(1,0);
                         break;
+                }
+                if (isPageOpen) {
+                    mHandler.removeMessages(PlayDrumActivity.MESSAGE_SLIDE_DRUM);
+                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 5000);
+
+                } else {
+                    slidingPage01.setVisibility(View.VISIBLE);
+                    slidingPage01.startAnimation(translateLeftAnim);
+                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 5000);
                 }
             }
-
             m_nPreTouchPosX = nTouchPosX;
         }
-
         return true;
     }
 
+    private void ChangeCheckVisibility(int check, int direction) {  //0 = next, 1 = pre , 0 =left, 1 = right
+        if(check == 0) {
+            imageView[left_check].setVisibility(View.VISIBLE);
+            if (direction == 0)
+                imageView[(left_check + 6) % 7].setVisibility(View.INVISIBLE);
+            else
+                imageView[(left_check + 8) % 7].setVisibility(View.INVISIBLE);
+        }
+        else {
+            imageView[right_check+7].setVisibility(View.VISIBLE);
+            if (direction == 0)
+                imageView[(right_check + 6) % 7 + 7].setVisibility(View.INVISIBLE);
+            else
+                imageView[(right_check + 8) % 7 + 7].setVisibility(View.INVISIBLE);
+        }
+    }
 }
-
-
-
-/*
-
-mSeek = (SeekBar)findViewById(R.id.musicbar);
-        pSeek = (SeekBar)findViewById(R.id.poolbar);
-
-        mSeek.getProgress();
-        pSeek.getProgress();
-
-        //Music
-        mSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-@Override
-public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (fromUser) {
-        mVolume = progress * ST;
-        player.setVolume(mVolume, mVolume);
-        }
-        }
-
-@Override
-public void onStartTrackingTouch(SeekBar seekBar) {
-        }
-
-@Override
-public void onStopTrackingTouch(SeekBar seekBar) {
-        }
-        });
-
-        //SoundPool
-        pSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-@Override
-public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (fromUser) {
-        pVolume = progress * ST;
-        }
-        }
-
-@Override
-public void onStartTrackingTouch(SeekBar seekBar) {
-        }
-
-@Override
-public void onStopTrackingTouch(SeekBar seekBar) {
-        }
-        });
-*/

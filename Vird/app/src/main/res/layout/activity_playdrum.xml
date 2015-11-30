@@ -1,9 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:orientation="vertical">
+android:orientation="vertical"
+    android:focusable="false">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-<LinearLayout
+
+    <LinearLayout
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -83,11 +90,14 @@ android:orientation="vertical">
 
 
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/left_sample1"
-                android:background="@drawable/snare"
+                android:src="@drawable/snare"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
                 android:onClick="onLeft1ButtonClicked" />
 
 
@@ -100,12 +110,15 @@ android:orientation="vertical">
 
 
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/left_sample2"
-                android:background="@drawable/crash"
-                android:onClick="onLeft2ButtonClicked" />
+                android:src="@drawable/crash"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onLeft1ButtonClicked" />
 
 
 
@@ -119,12 +132,15 @@ android:orientation="vertical">
 
 
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/left_sample3"
-                android:background="@drawable/splash"
-                android:onClick="onLeft3ButtonClicked" />
+                android:src="@drawable/splash"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onLeft1ButtonClicked" />
 
 
         </LinearLayout>
@@ -137,12 +153,15 @@ android:orientation="vertical">
 
 
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/left_sample4"
-                android:background="@drawable/high_hat"
-                android:onClick="onLeft4ButtonClicked" />
+                android:src="@drawable/high_hat"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onLeft1ButtonClicked" />
 
 
         </LinearLayout>
@@ -156,12 +175,15 @@ android:orientation="vertical">
 
 
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/left_sample5"
-                android:background="@drawable/high_tom"
-                android:onClick="onLeft5ButtonClicked" />
+                android:src="@drawable/high_tom"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onLeft1ButtonClicked" />
 
         </LinearLayout>
 
@@ -170,12 +192,15 @@ android:orientation="vertical">
             android:layout_height="match_parent">
 
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/left_sample6"
-                android:background="@drawable/low_tom"
-                android:onClick="onLeft6ButtonClicked" />
+                android:src="@drawable/low_tom"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onLeft1ButtonClicked" />
 
         </LinearLayout>
 
@@ -184,12 +209,15 @@ android:orientation="vertical">
             android:layout_height="match_parent">
 
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/left_sample7"
-                android:background="@drawable/base_drum"
-                android:onClick="onLeft7ButtonClicked" />
+                android:src="@drawable/base_drum"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onLeft1ButtonClicked" />
 
 
         </LinearLayout>
@@ -207,12 +235,16 @@ android:orientation="vertical">
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/right_sample1"
-                android:background="@drawable/snare"
-                android:onClick="onRight1ButtonClicked" />
+                android:src="@drawable/snare"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onRight1ButtonClicked"
+                android:clickable="false" />
 
             </LinearLayout>
 
@@ -220,70 +252,239 @@ android:orientation="vertical">
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/right_sample2"
-                android:background="@drawable/crash"
-                android:onClick="onRight2ButtonClicked" />
+                android:src="@drawable/crash"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onRight1ButtonClicked" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/right_sample3"
-                android:background="@drawable/splash"
-                android:onClick="onRight3ButtonClicked" />
+                android:src="@drawable/splash"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onRight1ButtonClicked" />
 
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/right_sample4"
-                android:background="@drawable/high_hat"
-                android:onClick="onRight4ButtonClicked" />
+                android:src="@drawable/high_hat"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onRight1ButtonClicked" />
 
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/right_sample5"
-                android:background="@drawable/high_tom"
-                android:onClick="onRight5ButtonClicked" />
+                android:src="@drawable/high_tom"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onRight1ButtonClicked" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/right_sample6"
-                android:background="@drawable/low_tom"
-                android:onClick="onRight6ButtonClicked" />
+                android:src="@drawable/low_tom"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onRight1ButtonClicked" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/right_sample7"
-                android:background="@drawable/base_drum"
-                android:onClick="onRight7ButtonClicked" />
+                android:src="@drawable/base_drum"
+                android:padding="80dp"
+                android:scaleType="centerCrop"
+                android:background="#00000000"
+                android:onClick="onRight1ButtonClicked" />
         </LinearLayout>
 
         </ViewFlipper>
 
+    </LinearLayout>
 </LinearLayout>
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.9"
+        android:weightSum="1">
+
+        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/slidingPage01"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:layout_weight="0.1"
+        android:visibility="gone"
+        android:background="@drawable/drumimage">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView01"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon"/>
+
+            <ImageView
+                android:id="@+id/imageView02"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon"/>
+
+            <ImageView
+                android:id="@+id/imageView03"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon"/>
+
+            <ImageView
+                android:id="@+id/imageView04"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon"/>
+
+            <ImageView
+                android:id="@+id/imageView05"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon"/>
+
+            <ImageView
+                android:id="@+id/imageView06"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon"/>
+
+            <ImageView
+                android:id="@+id/imageView07"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon"/>
+
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <ImageView
+                android:id="@+id/imageView08"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon2"/>
+
+            <ImageView
+                android:id="@+id/imageView09"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon2"/>
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon2"/>
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon2"/>
+
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon2"/>
+
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon2"/>
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_weight="10"
+                android:visibility="invisible"
+                android:src="@drawable/checkicon2"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>
