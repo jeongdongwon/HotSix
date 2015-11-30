@@ -825,11 +825,12 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
                 if (isPageOpen) {
                     //slidingPage01.startAnimation(translateRightAnim);
                     mHandler.removeMessages(PlayDrumActivity.MESSAGE_SLIDE_DRUM);
-                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 5000);
+                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 3000);
                 } else {
                     slidingPage01.setVisibility(View.VISIBLE);
                     slidingPage01.startAnimation(translateLeftAnim);
-                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 5000);
+                    mHandler.removeMessages(PlayDrumActivity.MESSAGE_SLIDE_DRUM);
+                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 3000);
                 }
 
             } else if (nTouchPosX < m_nPreTouchPosX - 10) {  // 1 snare 2 crash 3 splash 4 hihat 5 tom1 6 tom2 7 tom3
@@ -909,12 +910,13 @@ public class PlayDrumActivity extends Activity implements View.OnTouchListener {
                 }
                 if (isPageOpen) {
                     mHandler.removeMessages(PlayDrumActivity.MESSAGE_SLIDE_DRUM);
-                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 5000);
+                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 3000);
 
                 } else {
                     slidingPage01.setVisibility(View.VISIBLE);
                     slidingPage01.startAnimation(translateLeftAnim);
-                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 5000);
+                    mHandler.removeMessages(PlayDrumActivity.MESSAGE_SLIDE_DRUM);
+                    mHandler.sendEmptyMessageDelayed(PlayDrumActivity.MESSAGE_SLIDE_DRUM, 3000);
                 }
             }
             m_nPreTouchPosX = nTouchPosX;
