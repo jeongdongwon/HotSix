@@ -21,7 +21,7 @@ int16_t X,Y,Z;
 unsigned long int prev_time1;
 unsigned long int prev_time2;
 
-int time_gap = 160;
+int time_gap = 100;
 
 void setup(){
   blu_serial.begin(9600);
